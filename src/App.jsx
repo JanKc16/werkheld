@@ -95,6 +95,59 @@ function DashHeader({role,user,onLogout,onHome,color}){return(<header style={{bo
 
 function ProfileTab({user,onLogout}){const rows=[["E-Mail",user.email,"✉️"],["Telefon",user.phone||"—","📱"],["PLZ",user.plz||"—","📍"]];if(user.role==="handwerker"){rows.push(["Firma",user.firma||"—","🏢"]);rows.push(["Gewerk",user.gewerk||"—","🔧"]);}rows.push(["Seit",new Date(user.createdAt).toLocaleDateString("de-DE"),"📅"]);return(<div><h2 style={{...ttl,fontSize:24,marginBottom:24}}>Profil</h2><div style={cardStyle}><div style={{display:"flex",alignItems:"center",gap:16,marginBottom:24}}><div style={{width:64,height:64,background:"#1a1a1a",borderRadius:16,display:"flex",alignItems:"center",justifyContent:"center",fontSize:28}}>{user.role==="handwerker"?"🔧":"👤"}</div><div><h3 style={{...ttl,fontSize:20}}>{user.name}</h3><span style={badge(user.role==="handwerker"?"#f59e0b":"#3b82f6")}>{user.role==="handwerker"?"Handwerker":"Kunde"}</span></div></div><div style={{display:"grid",gap:12}}>{rows.map(function(row){return(<div key={row[0]} style={{display:"flex",alignItems:"center",gap:12,padding:"12px 16px",background:"#0a0a0a",borderRadius:12}}><span style={{fontSize:16}}>{row[2]}</span><span style={{color:"#666",fontSize:13,minWidth:80}}>{row[0]}</span><span style={{color:"#f1f1f1",fontSize:14,fontWeight:500}}>{row[1]}</span></div>);})}</div><button onClick={onLogout} style={{...btnOStyle,width:"100%",marginTop:24,color:"#dc2626",borderColor:"#dc262644"}}>Abmelden</button></div></div>);}
 
+function TradeIcon({ type }) {
+  const p = {
+    fill: "none",
+    stroke: "#f1f1f1",
+    strokeWidth: "1.5",
+    strokeLinecap: "round",
+    strokeLinejoin: "round"
+  };
+  const map = {
+    "Elektriker": <polyline points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />,
+    "Klempner": <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z" />,
+    "Maler": (
+        <>
+          <rect x="3" y="3" width="18" height="4" rx="1" />
+          <path d="M7 7v3a5 5 0 0 0 10 0V7" />
+          <line x1="12" y1="12" x2="12" y2="22" />
+        </>
+    ),
+    "Tischler": (
+        <>
+          <path d="M9.06 11.9l8.07-8.06a2.85 2.85 0 1 1 4.03 4.03l-8.06 8.08" />
+          <path d="M7.07 14.94c-1.66 0-3 1.35-3 3.02 0 1.33-2.5 1.52-2 2.02 1.08 1.1 2.49 2.02 4 2.02 2.2 0 3-1.8 3-3.02 0-1.67-1.33-3.04-2-3.04z" />
+        </>
+    ),
+    "Maurer": (
+        <>
+          <rect x="2" y="4" width="9" height="5" rx="1" />
+          <rect x="13" y="4" width="9" height="5" rx="1" />
+          <rect x="2" y="12.5" width="9" height="5" rx="1" />
+          <rect x="13" y="12.5" width="9" height="5" rx="1" />
+        </>
+    ),
+    "Heizung/Klima": <path d="M12 22a7 7 0 0 0 7-7c0-2-1-3.9-3-5.5s-3.5-4-4-6.5c-.5 2.5-2 4.9-4 6.5C6 11.1 5 13 5 15a7 7 0 0 0 7 7z" />,
+    "Schlosser": (
+        <>
+          <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+          <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+        </>
+    ),
+    "Dachdecker": (
+        <>
+          <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+          <polyline points="9 22 9 12 15 12 15 22" />
+        </>
+    )
+  };
+  return (
+      <svg width="28" height="28" viewBox="0 0 24 24" {...p}>
+        {map[type] || <circle cx="12" cy="12" r="9" />}
+      </svg>
+  );
+}
+
 function LandingPage({onNavigate}){const[scrolled,setScrolled]=useState(false);const[heroV,setHeroV]=useState(false);const[howTab,setHowTab]=useState("kunde");const[faqOpen,setFaqOpen]=useState(null);useEffect(function(){var t=setTimeout(function(){setHeroV(true);},200);var fn=function(){setScrolled(window.scrollY>50);};window.addEventListener("scroll",fn);return function(){clearTimeout(t);window.removeEventListener("scroll",fn);};},[]);function scrollTo(id){var el=document.getElementById(id);if(el)el.scrollIntoView({behavior:"smooth"});}var stepsK=[{n:"01",t:"Auftrag beschreiben",d:"Schildern Sie Ihr Problem in wenigen Klicks."},{n:"02",t:"Angebote erhalten",d:"Innerhalb von Minuten Angebote von Handwerkern."},{n:"03",t:"Handwerker buchen",d:"Wählen Sie nach Bewertung, Preis und Verfügbarkeit."}];var stepsH=[{n:"01",t:"Profil erstellen",d:"Qualifikationen und Meisterbrief zeigen."},{n:"02",t:"Aufträge finden",d:"Passende Anfragen direkt aufs Handy."},{n:"03",t:"Verdienen & wachsen",d:"Faire Konditionen, schnelle Auszahlung."}];var steps=howTab==="kunde"?stepsK:stepsH;
 return(<div>
 <nav style={{position:"fixed",top:0,left:0,right:0,zIndex:100,padding:scrolled?"12px 0":"20px 0",background:scrolled?"rgba(0,0,0,0.9)":"transparent",backdropFilter:scrolled?"blur(20px)":"none",borderBottom:scrolled?"1px solid #1a1a1a":"none",transition:"all 0.4s"}}><div style={{maxWidth:1200,margin:"0 auto",padding:"0 24px",display:"flex",alignItems:"center",justifyContent:"space-between"}}><div style={{display:"flex",alignItems:"center",gap:10,cursor:"pointer"}} onClick={function(){scrollTo("hero");}}><div style={{width:36,height:36,background:"#f1f1f1",borderRadius:10,display:"flex",alignItems:"center",justifyContent:"center",fontSize:18,fontWeight:900,color:"#000",fontFamily:"'Outfit',sans-serif"}}>W</div><span style={{...ttl,fontSize:20}}>werkheld</span></div><div className="nav-links" style={{display:"flex",alignItems:"center",gap:32}}>{[["Leistungen","services"],["So funktioniert's","how"],["Bewertungen","testimonials"],["FAQ","faq"]].map(function(item){return <span key={item[1]} onClick={function(){scrollTo(item[1]);}} style={{color:"#888",fontSize:14,cursor:"pointer",fontWeight:500}}>{item[0]}</span>;})}</div><div style={{display:"flex",alignItems:"center",gap:12}}><button onClick={function(){onNavigate("auth","handwerker");}} style={{...btnOStyle,padding:"10px 20px",fontSize:14}}>Für Handwerker</button><button onClick={function(){onNavigate("auth","kunde");}} style={{...btnStyle,padding:"10px 20px",fontSize:14}}>Jetzt starten</button></div></div></nav>
@@ -105,7 +158,19 @@ return(<div>
 
 <section className="section-pad" style={{padding:"80px 24px"}}><div className="stats-grid" style={{maxWidth:1200,margin:"0 auto",display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:20}}>{[["2.400+","Geprüfte Handwerker"],["18 Min","Ø Reaktionszeit"],["4.8★","Kundenbewertung"],["12.000+","Aufträge vermittelt"]].map(function(item,i){return(<Anim key={item[1]} delay={i*0.1}><div style={{textAlign:"center",padding:"32px 20px"}}><div style={{...ttl,fontSize:42,color:"#f1f1f1",marginBottom:6}}>{item[0]}</div><div style={{color:"#666",fontSize:14,fontWeight:500}}>{item[1]}</div></div></Anim>);})}</div></section>
 
-<section id="services" className="section-pad" style={{padding:"80px 24px"}}><div style={{maxWidth:1200,margin:"0 auto"}}><Anim><div style={{textAlign:"center",marginBottom:56}}><span style={{color:"#555",fontSize:13,fontWeight:600,letterSpacing:"0.12em",textTransform:"uppercase"}}>Leistungen</span><h2 style={{...ttl,fontSize:44,marginTop:12}}>Jedes Gewerk. Ein Klick.</h2></div></Anim><div className="grid-4" style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:16}}>{SERVICES.map(function(s,i){return(<Anim key={s.name} delay={i*0.06}><div style={{padding:"28px 24px",background:"#0a0a0a",borderRadius:16,border:"1px solid #1a1a1a"}}><div style={{fontSize:36,marginBottom:16}}>{s.icon}</div><h3 style={{color:"#f1f1f1",fontSize:18,fontWeight:700,marginBottom:6,fontFamily:"'Outfit',sans-serif"}}>{s.name}</h3><p style={{color:"#777",fontSize:14,lineHeight:1.5,marginBottom:14}}>{s.desc}</p><div style={{display:"flex",alignItems:"center",gap:6}}><div style={{width:8,height:8,borderRadius:"50%",background:"#22c55e",animation:"pulse 2s ease infinite"}}/><span style={{color:"#22c55e",fontSize:12,fontWeight:600}}>{s.n} verfügbar</span></div></div></Anim>);})}</div></div></section>
+<section id="services" className="section-pad" style={{padding:"80px 24px"}}><div style={{maxWidth:1200,margin:"0 auto"}}><Anim><div style={{textAlign:"center",marginBottom:56}}><span style={{color:"#555",fontSize:13,fontWeight:600,letterSpacing:"0.12em",textTransform:"uppercase"}}>Leistungen</span><h2 style={{...ttl,fontSize:44,marginTop:12}}>Jedes Gewerk. Ein Klick.</h2></div></Anim><div className="grid-4" style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:16}}>{SERVICES.map(function(s,i){return(<Anim key={s.name} delay={i*0.06}><div style={{padding:"28px 24px",background:"#0a0a0a",borderRadius:16,border:"1px solid #1a1a1a"}}><div style={{
+  width: 52,
+  height: 52,
+  background: "#111",
+  borderRadius: 14,
+  border: "1px solid #222",
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  marginBottom: 20
+}}>
+  <TradeIcon type={s.name} />
+</div><h3 style={{color:"#f1f1f1",fontSize:18,fontWeight:700,marginBottom:6,fontFamily:"'Outfit',sans-serif"}}>{s.name}</h3><p style={{color:"#777",fontSize:14,lineHeight:1.5,marginBottom:14}}>{s.desc}</p><div style={{display:"flex",alignItems:"center",gap:6}}><div style={{width:8,height:8,borderRadius:"50%",background:"#22c55e",animation:"pulse 2s ease infinite"}}/><span style={{color:"#22c55e",fontSize:12,fontWeight:600}}>{s.n} verfügbar</span></div></div></Anim>);})}</div></div></section>
 
 <section id="how" className="section-pad" style={{padding:"100px 24px"}}><div style={{maxWidth:1200,margin:"0 auto"}}><Anim><div style={{textAlign:"center",marginBottom:48}}><span style={{color:"#555",fontSize:13,fontWeight:600,letterSpacing:"0.12em",textTransform:"uppercase"}}>So funktioniert's</span><h2 style={{...ttl,fontSize:44,marginTop:12}}>Drei Schritte. Fertig.</h2></div></Anim><Anim delay={0.1}><div style={{display:"flex",justifyContent:"center",marginBottom:48}}><Tabs tabs={[{key:"kunde",label:"Für Kunden"},{key:"handwerker",label:"Für Handwerker"}]} active={howTab} onChange={setHowTab}/></div></Anim><div className="grid-3" style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:20}}>{steps.map(function(s,i){return(<Anim key={s.n+howTab} delay={i*0.12}><div style={{padding:"36px 28px",background:"#0a0a0a",borderRadius:18,border:"1px solid #1a1a1a",position:"relative",overflow:"hidden"}}><div style={{position:"absolute",top:-15,right:-10,fontSize:100,fontWeight:900,color:"#0f0f0f",fontFamily:"'Outfit',sans-serif",lineHeight:1,pointerEvents:"none"}}>{s.n}</div><span style={{display:"inline-block",padding:"6px 14px",background:"#151515",borderRadius:8,fontSize:12,fontWeight:700,color:"#555",marginBottom:20}}>SCHRITT {s.n}</span><h3 style={{fontFamily:"'Outfit',sans-serif",fontSize:22,fontWeight:700,marginBottom:10,color:"#f1f1f1",position:"relative"}}>{s.t}</h3><p style={{color:"#777",fontSize:14,lineHeight:1.65,position:"relative"}}>{s.d}</p></div></Anim>);})}</div></div></section>
 
